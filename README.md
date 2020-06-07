@@ -1,3 +1,3 @@
 # lib
 
-Library to make projects I work on easier. 
+Module to make projects I work on easier. 
