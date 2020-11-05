@@ -1,47 +1,37 @@
-import os, time
-	
+# Library
+
+import time, random, msvcrt, os
+
 def capitalize(word):
-	capitalized = ''
-	for x in word.split():
-		l = list(x)
-		capitalized += l[0].upper()
-		l.pop(0)
-		capitalized += ''.join(l) + ' '
-	return capitalized
-	
-def timer(h=0, m=0, s=10, end=''):
-	while True:
-		s -= 1
-		if s < 0:
-			m -= 1
-			s = 59
-			if m < 0:
-				h -= 1
-				m = 59
-				if h < 0:
-					print('\n' + end)
-					break
-				else:
-					print(h, 'hours', m, 'minutes', s, 'seconds', end='\r')
-			else:
-				print(h, 'hours', m, 'minutes', s, 'seconds', end='\r')
-		else:
-			print(h, 'hours', m, 'minutes', s, 'seconds', end='\r')
-		time.sleep(1)
-		
-def spinner(txt='', endtxt='', loops=5, delay=.1, set=0):
-	sets = [
+	word = list(word)
+	word[0] = word[0].upper()
+	return ''.join(word)
+
+def spinner(anim=0, speed=.1, loops=100, reverse=False):
+	anims = [
 		[
-			'\\',
-			'|',
+			'-',
 			'/',
-			'—'
+			'|',
+			'\\'      
 		],
 		[
-			',',
-			'·',
-			'\'',
-			'·'
+			'-  ',
+			' - ',
+			'  -',
+			'  -',
+			' - ',
+			'-  '     
+		],
+		[
+			'{',
+			'(',
+			'|',
+			')',
+			'}',
+			')',
+			'|',
+			'('
 		],
 		[
 			'👈',
@@ -51,8 +41,38 @@ def spinner(txt='', endtxt='', loops=5, delay=.1, set=0):
 		]
 	]
 
-	for loop in range(loops):
-		for spinner in sets[set]:
-			print(txt + spinner + endtxt, end='\r')
-			time.sleep(delay)
-	
+	loop = anims[anim]
+	if reverse == False:
+		for i in range(loops):
+			for x in range(0, len(loop)):
+				print(loop[x], end='\r')
+				time.sleep(speed)
+		else:
+			for i in range(0, len(loop)):
+				for x in range(len(loop)-1, 0, -1):
+					print(loop[x], end='\r')
+					time.sleep(speed)
+
+def selection(opt):
+	selected = 0
+	print('Options:\n' + ', '.join(opt))
+	menu = True
+	while menu:
+		key = msvcrt.getch()
+		if key == b'P': # if down arrow
+			selected += 1
+			if selected > len(opt) - 1:
+				selected = 0
+			print('[' + opt[selected] + ']' + ' ' * 100, end='\r')
+		if key == b'H': # if up arrow
+			selected -= 1
+			if selected < 0:
+				selected = len(opt) - 1
+			print('[' + opt[selected] + ']' + ' ' * 100, end='\r')
+		if key == b'\x1b': # if esc
+			exit()
+		if key == b'\r': # if enter
+			menu = False
+			for x in range(20):
+				print('You have selected ' + opt[selected] + ' ' * 100, end='\r')
+				time.sleep(1)
