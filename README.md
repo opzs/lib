@@ -1,3 +1,3 @@
 # lib
 
-Module to make projects I work on easier. 
+Just some random stuff.
